@@ -92,7 +92,7 @@ class YoutubeView(APIView):
 
 def other_url(self):
     format_id = str(self.get('format', 'best')).split(' ').__getitem__(0)
-    video = {}
+    video = []
     title = self['title']
     thumbnail = self['thumbnails'][0]['url']
     if not format_id:
@@ -100,29 +100,31 @@ def other_url(self):
             if formats['format_id'] == format_id:
                 url = formats['url']
                 ext = formats['ext']
+                format_id = 'best'
                 try:
-                    filesize = formats['filesize']
+                    filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
                 except KeyError:
                     filesize = None
-                liste = {'url': url, 'ext': ext, 'size': filesize}
-                video['best'] = liste
+                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+                video.append(liste)
     else:
         for formats in self['formats']:
             url = formats['url']
             ext = formats['ext']
+            format_id = 'best'
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            video['best'] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
     return thumbnail, title, video
 
 
 def vimeo_url(self):
     ydl = YoutubeDL()
     regex = r'(http-)'
-    video = {}
+    video = []
     r = ydl.extract_info(self, download=False)
     title = r['title']
     thumbnail = r['thumbnails'][0]['url']
@@ -130,18 +132,19 @@ def vimeo_url(self):
         if re.search(regex, formats['format_id']):
             url = formats['url']
             ext = formats['ext']
+            format_id = str(formats['format_id']).split('-').__getitem__(1)
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            video[str(formats['format_id']).split('-').__getitem__(1)] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
     return thumbnail, title, video
 
 
 def yt_url(self):
     ydl = YoutubeDL()
-    video = {}
+    video = []
     r = ydl.extract_info(self, download=False)
     title = r['title']
     thumbnail = r['thumbnails'][0]['url']
@@ -149,22 +152,24 @@ def yt_url(self):
         if (formats['format_id'] == '18') or (formats['format_id'] == '140') or (formats['format_id'] == '22'):
             url = formats['url']
             ext = formats['ext']
+            if formats['format_id'] != '140':
+                format_id = str(formats['height']) + 'p'
+            else:
+                format_id = "audio"
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize'])/1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            if formats['format_id'] != '140':
-                video[str(formats['height']) + 'p'] = liste
-            else:
-                video['audio'] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
+
     return thumbnail, title, video
 
 
 def vk_url(self):
     ydl = YoutubeDL()
     regex = r'(hls-)'
-    video = {}
+    video = []
     r = ydl.extract_info(self, download=False)
     title = r['title']
     thumbnail = r['thumbnails'][0]['url']
@@ -172,18 +177,19 @@ def vk_url(self):
         if re.match(regex, formats['format_id']) and formats['format_id'] != 'hls-meta':
             url = formats['url']
             ext = formats['ext']
+            format_id = str(formats['format']).split('x').__getitem__(1) + 'p'
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            video[str(formats['format']).split('x').__getitem__(1) + 'p'] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
     return thumbnail, title, video
 
 
 def fb_url(self):
     ydl = YoutubeDL()
-    video = {}
+    video = []
     r = ydl.extract_info(self, download=False)
     title = r['title']
     thumbnail = r['thumbnails'][0]['url']
@@ -191,27 +197,29 @@ def fb_url(self):
         if formats['format_id'] == 'dash_hd_src_no_ratelimit':
             url = formats['url']
             ext = formats['ext']
+            format_id = 'high quality'
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            video['high quality'] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
         elif formats['format_id'] == 'dash_sd_src_no_ratelimit':
             url = formats['url']
             ext = formats['ext']
+            format_id = 'standart quality'
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            video['standart quality'] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
     return thumbnail, title, video
 
 
 def dm_url(self):
     ydl = YoutubeDL()
-    video = {}
+    video = []
     r = ydl.extract_info(self, download=False)
     title = r['title']
     thumbnail = r['thumbnails'][0]['url']
@@ -219,18 +227,19 @@ def dm_url(self):
         if (formats['format_id'] == 'http-380') or (formats['format_id'] == 'http-480') or (formats['format_id'] == 'http-240') or (formats['format_id'] == 'http-720') or (formats['format_id'] == 'http-1080') or (formats['format_id'] == 'http-360'):
             url = formats['url']
             ext = formats['ext']
+            format_id = str(formats['format_id']).split('-').__getitem__(1) + 'p'
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            video[str(formats['format_id']).split('-').__getitem__(1) + 'p'] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
     return thumbnail, title, video
 
 
 def ru_url(self):
     ydl = YoutubeDL()
-    video = {}
+    video = []
     r = ydl.extract_info(self, download=False)
     title = r['title']
     thumbnail = r['thumbnails'][0]['url']
@@ -238,10 +247,11 @@ def ru_url(self):
         if (formats['format_id'] == '360p') or (formats['format_id'] == '240p') or (formats['format_id'] == '480p') or (formats['format_id'] == '720p') or (formats['format_id'] == '1080p'):
             url = formats['url']
             ext = formats['ext']
+            format_id = formats['format_id']
             try:
-                filesize = formats['filesize']
+                filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
             except KeyError:
                 filesize = None
-            liste = {'url': url, 'ext': ext, 'size': filesize}
-            video[formats['format_id']] = liste
+            liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+            video.append(liste)
     return thumbnail, title, video
