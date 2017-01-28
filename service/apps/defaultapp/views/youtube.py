@@ -1,19 +1,16 @@
 from time import sleep
-
+from django.conf import settings
 from rest_framework import permissions
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from youtube_dl import YoutubeDL
 import re
-from regex_urls import *
 
 
 class YoutubeView(APIView):
 
     permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication, TokenAuthentication,)
     parser_classes = (JSONParser,)
 
     def get(self, request,  *args, **kwargs):
@@ -22,7 +19,7 @@ class YoutubeView(APIView):
     def post(self, request, format=None):
         sleep(1)
         url = request.data.get('url', None)
-        if re.match(regex_yt, str(url)):
+        if re.match(settings.REGEX_YT, str(url)):
             thumbnail, title, video = yt_url(url)
             return Response({
                              "data": video,
@@ -30,7 +27,7 @@ class YoutubeView(APIView):
                              "thumbnail": thumbnail,
                              "success": True,
                              })
-        elif re.match(regex_vk, str(url)):
+        elif re.match(settings.REGEX_VK, str(url)):
             thumbnail, title, video = vk_url(url)
             return Response({
                 "data": video,
@@ -38,7 +35,7 @@ class YoutubeView(APIView):
                 "thumbnail": thumbnail,
                 "success": True,
             })
-        elif re.match(regex_fb, str(url)):
+        elif re.match(settings.REGEX_FB, str(url)):
             thumbnail, title, video = fb_url(url)
             return Response({
                 "data": video,
@@ -46,7 +43,7 @@ class YoutubeView(APIView):
                 "thumbnail": thumbnail,
                 "success": True,
             })
-        elif re.match(regex_dm, str(url)):
+        elif re.match(settings.REGEX_DM, str(url)):
             thumbnail, title, video = dm_url(url)
             return Response({
                 "data": video,
@@ -54,7 +51,7 @@ class YoutubeView(APIView):
                 "thumbnail": thumbnail,
                 "success": True,
             })
-        elif re.search(regex_ru, str(url)):
+        elif re.search(settings.REGEX_RU, str(url)):
             thumbnail, title, video = ru_url(url)
             return Response({
                 "data": video,
@@ -62,7 +59,7 @@ class YoutubeView(APIView):
                 "thumbnail": thumbnail,
                 "success": True,
             })
-        elif re.search(regex_vimeo, str(url)):
+        elif re.search(settings.REGEX_VIMEO, str(url)):
             thumbnail, title, video = vimeo_url(url)
             return Response({
                 "data": video,
@@ -70,7 +67,7 @@ class YoutubeView(APIView):
                 "thumbnail": thumbnail,
                 "success": True,
             })
-        elif re.search(regex_url, str(url)):
+        elif re.search(settings.REGEX_URL, str(url)):
             ydl = YoutubeDL()
             try:
                 info_dict = ydl.extract_info(url, download=False)
@@ -106,7 +103,7 @@ def other_url(self):
                 format_id = 'best'
                 try:
                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-                except KeyError:
+                except:
                     filesize = None
                 liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
                 video.append(liste)
@@ -117,7 +114,7 @@ def other_url(self):
             format_id = 'best'
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)
@@ -138,7 +135,7 @@ def vimeo_url(self):
             format_id = str(formats['format_id']).split('-').__getitem__(1)
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)
@@ -161,7 +158,7 @@ def yt_url(self):
                 format_id = "audio"
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize'])/1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)
@@ -183,7 +180,7 @@ def vk_url(self):
             format_id = str(formats['format']).split('x').__getitem__(1) + 'p'
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)
@@ -203,7 +200,7 @@ def fb_url(self):
             format_id = 'high quality'
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)
@@ -213,7 +210,7 @@ def fb_url(self):
             format_id = 'standart quality'
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)
@@ -233,7 +230,7 @@ def dm_url(self):
             format_id = str(formats['format_id']).split('-').__getitem__(1) + 'p'
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)
@@ -253,7 +250,7 @@ def ru_url(self):
             format_id = formats['format_id']
             try:
                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-            except KeyError:
+            except:
                 filesize = None
             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
             video.append(liste)

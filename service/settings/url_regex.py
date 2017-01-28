@@ -1,5 +1,5 @@
-regex_yt = r'^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$'
-regex_vk = r'''(?x)
+REGEX_YT = r'^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$'
+REGEX_VK = r'''(?x)
                     https?://
                         (?:
                             (?:
@@ -14,7 +14,7 @@ regex_vk = r'''(?x)
                             (?P<videoid>-?\d+_\d+)(?:.*\blist=(?P<list_id>[\da-f]+))?
                         )
                     '''
-regex_fb = r'''(?x)
+REGEX_FB = r'''(?x)
                 (?:
                     https?://
                         (?:[\w-]+\.)?(?:facebook\.com|facebookcorewwwi\.onion)/
@@ -35,10 +35,10 @@ regex_fb = r'''(?x)
                 )
                 (?P<id>[0-9]+)
                 '''
-regex_dm = r'(?i)(?:https?://)?(?:(www|touch)\.)?dailymotion\.[a-z]{2,3}/(?:(?:embed|swf|#)/)?video/(?P<id>[^/?_]+)'
-regex_ru = r'https?://(?:(?:www|m)\.)?my\.mail\.ru/(?:video/.*#video=/?(?P<idv1>(?:[^/]+/){3}\d+)|(?:(?P<idv2prefix>(?:[^/]+/){2})video/(?P<idv2suffix>[^/]+/\d+))\.html)'
-regex_url = r'[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'
-regex_vimeo = r'''(?x)
+REGEX_DM = r'(?i)(?:https?://)?(?:(www|touch)\.)?dailymotion\.[a-z]{2,3}/(?:(?:embed|swf|#)/)?video/(?P<id>[^/?_]+)'
+REGEX_RU = r'https?://(?:(?:www|m)\.)?my\.mail\.ru/(?:video/.*#video=/?(?P<idv1>(?:[^/]+/){3}\d+)|(?:(?P<idv2prefix>(?:[^/]+/){2})video/(?P<idv2suffix>[^/]+/\d+))\.html)'
+REGEX_URL = r'[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'
+REGEX_VIMEO = r'''(?x)
                     https?://
                         (?:
                             (?:
@@ -60,4 +60,4 @@ regex_vimeo = r'''(?x)
                         (?:/[\da-f]+)?
                         /?(?:[?&].*)?(?:[#].*)?$
                     '''
-regex_yahoo = r'(?P<url>(?P<host>https?://(?:[a-zA-Z]{2}\.)?[\da-zA-Z_-]+\.yahoo\.com)/(?:[^/]+/)*(?P<display_id>.+)?-(?P<id>[0-9]+)(?:-[a-z]+)?(?:\.html)?)'
+REGEX_YAHOO = r'(?P<url>(?P<host>https?://(?:[a-zA-Z]{2}\.)?[\da-zA-Z_-]+\.yahoo\.com)/(?:[^/]+/)*(?P<display_id>.+)?-(?P<id>[0-9]+)(?:-[a-z]+)?(?:\.html)?)'
