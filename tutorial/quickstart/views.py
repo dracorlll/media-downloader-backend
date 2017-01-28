@@ -1,3 +1,5 @@
+from time import sleep
+
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.parsers import JSONParser
@@ -18,6 +20,7 @@ class YoutubeView(APIView):
         return Response({"success": True})
 
     def post(self, request, format=None):
+        sleep(1)
         url = request.data.get('url', None)
         if re.match(regex_yt, str(url)):
             thumbnail, title, video = yt_url(url)
