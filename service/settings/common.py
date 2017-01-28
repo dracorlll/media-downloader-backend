@@ -54,6 +54,8 @@ ROOT_URLCONF = 'apps.defaultapp.urls'
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 LANGUAGE_CODE = 'en-US'
 
+STATIC_ROOT = '.'
+
 TIME_ZONE = 'Europe/Istanbul'
 USE_I18N = True
 USE_L10N = True
