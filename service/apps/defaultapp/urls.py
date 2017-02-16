@@ -7,6 +7,7 @@ router = DefaultRouter()
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^url/', YoutubeView.as_view(), name="url"),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

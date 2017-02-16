@@ -3,6 +3,7 @@ SECRET_KEY = 'dbx657err4u@70t&=o-e7n^3zm(ayn$pqpq4rln_i6!(ynqs0r'
 
 LOCAL_APPS = (
     'apps.defaultapp',
+    'apps.defaultapp.tasks',
 )
 
 
@@ -14,6 +15,7 @@ DJANGO_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_celery_beat',
 )
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
