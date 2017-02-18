@@ -16,10 +16,11 @@ class YoutubeView(APIView):
         max_try = 5
         proxy = get_random_proxy()
         url = request.data.get('url')
+        source_address = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
 
         while max_try > 0 and proxy:
 
-            provider = VideoProvider(proxy)
+            provider = VideoProvider(proxy, source_address)
             func = provider.get_video_provider(url)
 
             thumbnail, title, video = None, None, None

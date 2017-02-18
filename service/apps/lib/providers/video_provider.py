@@ -37,12 +37,12 @@ class VideoProvider:
 
     ydl = None
 
-    def __init__(self, proxy):
+    def __init__(self, proxy, source_address):
         if proxy:
-            self.ydl = YoutubeDL(params={'proxy': str(proxy), 'socket_timeout': '5'})
+            self.ydl = YoutubeDL(params={'proxy': str(proxy), 'socket_timeout': '5', 'source_address': source_address})
             print 'Using proxy ' + str(proxy)
         else:
-            self.ydl = YoutubeDL(params={'socket_timeout': '10'})
+            self.ydl = YoutubeDL(params={'socket_timeout': '10', 'source_address': source_address})
             print 'Not using proxy'
 
     def vimeo(self, url):
