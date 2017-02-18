@@ -31,6 +31,7 @@ class YoutubeView(APIView):
                 proxy.delete()
                 proxy = get_random_proxy()
                 print 'Unable to download url info'
+                max_try -= 1
 
             if video:
                 return Response({"data": video, "title": title, "thumbnail": thumbnail, "status": "success"})
