@@ -10,3 +10,9 @@ class Proxy(models.Model):
 
     class Meta:
         db_table = 'proxy'
+
+    def __str__(self):
+        return self.ip + ':' + self.port
+
+    def __unicode__(self):
+        return self.ip + ':' + self.port

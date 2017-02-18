@@ -21,10 +21,13 @@ def new_proxy():
     return proxy
 
 
-def get_random():
+def get_random_proxy():
     count = Proxy.objects.count()
     random_index = randint(0, count - 1)
     proxies = Proxy.objects.all()
     if proxies:
         return proxies[random_index]
     return None
+
+if __name__ == '__main__':
+    print get_random_proxy()
