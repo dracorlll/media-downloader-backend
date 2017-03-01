@@ -34,7 +34,6 @@ from youtube_dl import YoutubeDL
 
 
 class VideoProvider:
-
     ydl = None
 
     def __init__(self, proxy):
@@ -81,7 +80,8 @@ class VideoProvider:
                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
                 except:
                     filesize = None
-                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id, 'http_headers': formats['http_headers']}
+                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id,
+                         'http_headers': formats['http_headers']}
                 video.append(liste)
 
         return thumbnail, title, video
@@ -97,7 +97,7 @@ class VideoProvider:
                 url = formats['url']
                 ext = formats['ext']
                 format_id = str(formats['format']).split('url').__getitem__(1) + 'p'
-		print format_id
+                print format_id
                 try:
                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
                 except:
@@ -170,7 +170,8 @@ class VideoProvider:
                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
                 except:
                     filesize = None
-                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id, 'http_headers': formats['http_headers']}
+                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id,
+                         'http_headers': formats['http_headers']}
                 video.append(liste)
         return thumbnail, title, video
 
