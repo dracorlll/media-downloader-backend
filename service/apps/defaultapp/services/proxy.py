@@ -1,5 +1,8 @@
 from json import loads
 from random import randint
+from datetime import datetime, timedelta
+
+from django.conf import settings
 
 from apps.defaultapp.models import Proxy
 from apps.lib.clients.gimmeproxy_client import GimmeProxy
@@ -29,5 +32,13 @@ def get_random_proxy():
         return proxies[random_index]
     return None
 
-if __name__ == '__main__':
-    print get_random_proxy()
+
+def clean_proxy_list():
+    proxies = Proxy.objects.all()
+
+    for proxy in proxies:
+        tz = proxy.timestamp.tzinfo
+        delta = datetime.now(tz) - proxy.timestamp
+        max_life = timedelta(minutes=settings.MAX_PROXY_LIFE)
+        if delta > max_life:
+            proxy.delete()
