@@ -37,12 +37,12 @@ class VideoProvider:
 
     ydl = None
 
-    def __init__(self, proxy, source_address):
+    def __init__(self, proxy):
         if proxy:
-            self.ydl = YoutubeDL(params={'proxy': str(proxy), 'socket_timeout': '5', 'source_address': source_address})
+            self.ydl = YoutubeDL(params={'proxy': str(proxy), 'socket_timeout': '5'})
             print 'Using proxy ' + str(proxy)
         else:
-            self.ydl = YoutubeDL(params={'socket_timeout': '10', 'source_address': source_address})
+            self.ydl = YoutubeDL(params={'socket_timeout': '10'})
             print 'Not using proxy'
 
     def vimeo(self, url):
@@ -81,7 +81,7 @@ class VideoProvider:
                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
                 except:
                     filesize = None
-                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id, 'http_headers': formats['http_headers']}
                 video.append(liste)
 
         return thumbnail, title, video
@@ -93,10 +93,11 @@ class VideoProvider:
         title = r['title']
         thumbnail = r['thumbnails'][0]['url']
         for formats in r['formats']:
-            if re.match(regex, formats['format_id']) and formats['format_id'] != 'hls-meta':
+            if re.match(regex, formats['format_id']):
                 url = formats['url']
                 ext = formats['ext']
-                format_id = str(formats['format']).split('x').__getitem__(1) + 'p'
+                format_id = str(formats['format']).split('url').__getitem__(1) + 'p'
+		print format_id
                 try:
                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
                 except:
@@ -109,7 +110,7 @@ class VideoProvider:
         video = []
         r = self.ydl.extract_info(url, download=False)
         title = r['title']
-        thumbnail = r['thumbnails'][0]['url']
+        thumbnail = ''
         for formats in r['formats']:
             if formats['format_id'] == 'dash_hd_src_no_ratelimit':
                 url = formats['url']
@@ -169,7 +170,7 @@ class VideoProvider:
                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
                 except:
                     filesize = None
-                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id, 'http_headers': formats['http_headers']}
                 video.append(liste)
         return thumbnail, title, video
 
