@@ -19,3 +19,5 @@ DATABASES = {
 
 
 STATIC_URL = '/static/'
+
+MAX_PROXY_LIFE = 120
