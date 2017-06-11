@@ -14,7 +14,8 @@ class YoutubeView(APIView):
 
     def post(self, request):
         max_try = 5
-        proxy = get_random_proxy()
+        proxy = 'asd'
+        # proxy = get_random_proxy()
         url = request.data.get('url')
         while max_try > 0 and proxy:
 
@@ -27,8 +28,8 @@ class YoutubeView(APIView):
                                  "proxy": str(proxy)})
             except Exception as e:
                 max_try -= 1
-                proxy.delete()
-                proxy = get_random_proxy()
+                # proxy.delete()
+                # proxy = get_random_proxy()
                 print e.message
 
         return Response({"status": "fail"})
