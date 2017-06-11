@@ -1,6 +1,7 @@
 import os
 from .common import *
 from .url_regex import *
+from .gimmeproxy import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -18,3 +19,5 @@ DATABASES = {
 
 
 STATIC_URL = '/static/'
+
+MAX_PROXY_LIFE = 120
