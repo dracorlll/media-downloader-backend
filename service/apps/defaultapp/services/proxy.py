@@ -13,14 +13,11 @@ def new_proxy():
     content, body = GimmeProxy.get_proxy()
     if content.get('status') == '200':
         response_body = loads(body)
-        ip = response_body.get('ip')
-        port = response_body.get('port')
-        country = response_body.get('country')
+        print response_body.get('data')
         defaults = {
-            'port': port,
-            'country': country
+            'ip': '0'
         }
-        proxy = Proxy.objects.get_or_create(ip=ip, defaults=defaults)
+        proxy = None
     return proxy
 
 

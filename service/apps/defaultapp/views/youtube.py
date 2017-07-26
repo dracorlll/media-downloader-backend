@@ -14,8 +14,7 @@ class YoutubeView(APIView):
 
     def post(self, request):
         max_try = 5
-        proxy = 'asd'
-        # proxy = get_random_proxy()
+        proxy = get_random_proxy()
         url = request.data.get('url')
         while max_try > 0 and proxy:
 
