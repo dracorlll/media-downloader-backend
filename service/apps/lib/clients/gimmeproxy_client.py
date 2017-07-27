@@ -8,8 +8,4 @@ class GimmeProxy:
 
     @classmethod
     def get_proxy(cls):
-        query_params = {
-            'api_key': settings.GIMMEPROXY_API_KEY,
-            'action': 'get_proxies'
-        }
-        return HttpClient.get(settings.GIMMEPROXY_BASE_URL, query_params=query_params)
+        return HttpClient.get(settings.GIMMEPROXY_BASE_URL)

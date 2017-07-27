@@ -8,5 +8,6 @@ class ProxySerializer(ModelSerializer):
     class Meta:
         model = Proxy
         fields = (
-            'ip'
+            'ip',
+            'ttl'
         )

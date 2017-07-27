@@ -1,37 +1,6 @@
-# def other(url):
-#     format_id = str(url.get('format', 'best')).split(' ').__getitem__(0)
-#     video = []
-#     title = url['title']
-#     thumbnail = url['thumbnails'][0]['url']
-#     if not format_id:
-#         for formats in url['formats']:
-#             if formats['format_id'] == format_id:
-#                 url = formats['url']
-#                 ext = formats['ext']
-#                 format_id = 'best'
-#                 try:
-#                     filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-#                 except:
-#                     filesize = None
-#                 liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
-#                 video.append(liste)
-#     else:
-#         for formats in url['formats']:
-#             url = formats['url']
-#             ext = formats['ext']
-#             format_id = 'best'
-#             try:
-#                 filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
-#             except:
-#                 filesize = None
-#             liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
-#             video.append(liste)
-#     return thumbnail, title, video
 import re
-
 from django.conf import settings
 from youtube_dl import YoutubeDL
-import json
 
 
 class VideoProvider:
@@ -39,8 +8,43 @@ class VideoProvider:
     ydl = None
 
     def __init__(self, proxy):
-        self.ydl = YoutubeDL(params={'socket_timeout': '10'})
-        print 'Not using proxy'
+        if proxy:
+            self.ydl = YoutubeDL(params={'proxy': str(proxy), 'socket_timeout': '5'})
+            print 'Using proxy ' + str(proxy)
+        else:
+            self.ydl = YoutubeDL(params={'socket_timeout': '10'})
+            print 'Not using proxy'
+
+    def other(self, url):
+        url = self.ydl.extract_info(url, download=False)
+        format_id = str(url.get('format', 'best')).split(' ').__getitem__(0)
+        video = []
+        title = url['title']
+        thumbnail = url['thumbnails'][0]['url']
+        if format_id:
+            for formats in url['formats']:
+                if formats['format_id'] == format_id:
+                    url = formats['url']
+                    ext = formats['ext']
+                    format_id = 'best'
+                    try:
+                        filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
+                    except:
+                        filesize = None
+                    liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+                    video.append(liste)
+        else:
+            for formats in url['formats']:
+                url = formats['url']
+                ext = formats['ext']
+                format_id = formats['format_id']
+                try:
+                    filesize = str(float("{0:.2f}".format(float(formats['filesize']) / 1048576))) + ' Mb'
+                except:
+                    filesize = None
+                liste = {'url': url, 'ext': ext, 'size': filesize, 'format': format_id}
+                video.append(liste)
+        return thumbnail, title, video
 
     def vimeo(self, url):
         regex = r'(http-)'
@@ -438,4 +442,6 @@ class VideoProvider:
             func = self.ustream
         elif re.search(settings.REGEX_VIEWSTER, str(url)):
             func = self.viewster
+        else:
+            func = self.other
         return func
