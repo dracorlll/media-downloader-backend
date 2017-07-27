@@ -1,2 +1,2 @@
-GIMMEPROXY_BASE_URL = 'http://gimmeproxy.com/api/getProxy'
-GIMMEPROXY_API_KEY = '22ebc4e3-831b-4fb3-bee7-759f541ad9f9'
+GIMMEPROXY_BASE_URL = 'https://proxy-spider.com/api/private-proxies.json?api_key=39-0f520c235c5049a4114c5aa8765efb4&action=get_proxies'
+GIMMEPROXY_API_KEY = '39-0f520c235c5049a4114c5aa8765efb4'

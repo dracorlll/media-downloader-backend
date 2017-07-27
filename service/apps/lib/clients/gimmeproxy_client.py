@@ -8,12 +8,4 @@ class GimmeProxy:
 
     @classmethod
     def get_proxy(cls):
-        query_params = {
-            'api_key': settings.GIMMEPROXY_API_KEY,
-            'get': 'true',
-            'websites': 'google',
-            'maxCheckPeriod': 3600,
-            'minSpeed': 50,
-            'supportsHttps': True
-        }
-        return HttpClient.get(settings.GIMMEPROXY_BASE_URL, query_params=query_params)
+        return HttpClient.get(settings.GIMMEPROXY_BASE_URL)
